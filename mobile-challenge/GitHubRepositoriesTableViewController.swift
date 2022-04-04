@@ -41,7 +41,7 @@ class GitHubRepositoriesTableViewController: UITableViewController {
         case 0:
             language = "Java"
         case 1:
-             language = "Swift"
+             language = "Swfit"
         case 2:
              language = "C#"
         default:
