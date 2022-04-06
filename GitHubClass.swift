@@ -21,7 +21,6 @@ struct GitHubInfo : Codable{
     let description: String
     let owner : Owner
 
-
 }
 
 struct Owner : Codable{
@@ -31,6 +30,7 @@ struct Owner : Codable{
     let repos_url : String
     
 }
+
 
 
     

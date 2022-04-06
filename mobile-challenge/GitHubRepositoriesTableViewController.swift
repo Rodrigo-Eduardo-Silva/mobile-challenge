@@ -34,6 +34,13 @@ class GitHubRepositoriesTableViewController: UITableViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! repositoriesTableViewController
+        let repo = repositories[tableView.indexPathForSelectedRow!.row]
+        vc.owner = repo
+        
+    }
+    
     
     func selectLanguage()-> String {
         var language = "Java"
@@ -41,7 +48,7 @@ class GitHubRepositoriesTableViewController: UITableViewController {
         case 0:
             language = "Java"
         case 1:
-             language = "Swfit"
+             language = "Swift"
         case 2:
              language = "C#"
         default:

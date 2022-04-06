@@ -13,8 +13,8 @@ class GithubAPI {
     static private let basePath = "https://api.github.com/search/repositories?"
     static private let teste = "https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1"
     static private let privateToken = "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"
-    static private let publicKey = "https://api.github.com/search/repositories?q=stars:>=10000+language:go&sort=stars&order=desc"
     static private let per_page = 30
+    
     
     class func loadRepositories( page: Int , language: String ,onComplete: @escaping (GitHead?) -> Void ){
 
@@ -23,7 +23,7 @@ class GithubAPI {
             "Authorization": "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",
             "Accept": "application/json"
         ]
-
+        print(url)
         AF.request(url,headers: headers).responseDecodable(of: GitHead.self) { response in
                guard let data = response.data,
                   let githubinfo = try? JSONDecoder().decode(GitHead.self, from: data)else{
@@ -36,6 +36,29 @@ class GithubAPI {
             
         }
     }
+    
+    class func loadPulls(owner : String , repo : String , onComplete : @escaping (Pull?) -> Void){
+        let url = "https://api.github.com/repos/\(owner)/\(repo)/pulls"
+        let headers : HTTPHeaders = [
+            "Authorization": "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",
+            "Accept": "application/json"
+          ]
+        AF.request(url,headers: headers).responseDecodable(of: Pull.self) { response in
+               guard let data = response.data,
+                  let githubpull = try? JSONDecoder().decode(Pull.self, from: data)else{
+                   onComplete(nil)
+                      print("deu ruim")
+                      print(response.error as Any)
+                      print(url)
+                return
+            }
+            onComplete(githubpull)
+            
+        }
+
+        
+    }
+    
 
     
 }
