@@ -37,10 +37,12 @@ class GitHubTableViewCell: UITableViewCell {
         lbsuerName.text = repo.owner.login
         
         if let url = URL(string: repo.owner.avatar_url){
+            
             lbAvatar.kf.setImage(with: url, placeholder: nil, options: nil, completionHandler: nil)
         }else{
             lbAvatar.image = nil
         }
+        
     }
 
 }

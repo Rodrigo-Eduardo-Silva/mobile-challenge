@@ -12,15 +12,15 @@ class GithubAPI {
     
     static private let basePath = "https://api.github.com/search/repositories?"
     static private let teste = "https://api.github.com/search/repositories?q=language:Java&sort=stars&page=1"
-    static private let privateToken = "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"
-    static private let per_page = 30
+    static private let privateToken = "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"
+    static private let per_page = 50
     
     
     class func loadRepositories( page: Int , language: String ,onComplete: @escaping (GitHead?) -> Void ){
 
         let url = basePath + "q=language:\(language)&sort=stars&page=\(page)&per_page=\(per_page)"
         let headers: HTTPHeaders = [
-            "Authorization": "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",
+            "Authorization": "\(privateToken)",
             "Accept": "application/json"
         ]
         print(url)
@@ -37,15 +37,15 @@ class GithubAPI {
         }
     }
     
-    class func loadPulls(owner : String , repo : String , onComplete : @escaping (Pull?) -> Void){
-        let url = "https://api.github.com/repos/\(owner)/\(repo)/pulls"
+    class func loadPulls( pullpage: Int , owner : String , repo : String , onComplete : @escaping ([PullRequest]?) -> Void){
+        let url = "https://api.github.com/repos/\(owner)/\(repo)/pulls?page=\(pullpage)&per_page=25"
         let headers : HTTPHeaders = [
-            "Authorization": "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",
+            "Authorization": "\(privateToken)",
             "Accept": "application/json"
           ]
-        AF.request(url,headers: headers).responseDecodable(of: Pull.self) { response in
+        AF.request(url,headers: headers).responseDecodable(of: [PullRequest].self) { response in
                guard let data = response.data,
-                  let githubpull = try? JSONDecoder().decode(Pull.self, from: data)else{
+                  let githubpull = try? JSONDecoder().decode([PullRequest].self, from: data)else{
                    onComplete(nil)
                       print("deu ruim")
                       print(response.error as Any)

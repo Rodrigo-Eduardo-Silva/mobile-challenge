@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class repositoriesTableViewCell: UITableViewCell {
     
@@ -28,13 +29,18 @@ class repositoriesTableViewCell: UITableViewCell {
     
     func prepareCellPull(with pulls : PullRequest) {
         lbTitle.text = pulls.title
+        if let bodyPull = pulls.user.body {
+            LbBody.text = bodyPull
+        }else{
+            LbBody.text = "Just a PullRequest Body"
+        }
     
         
-        if let url = URL(string: pulls.user.avatar_ur){
+        if let url = URL(string: pulls.user.avatar_url){
             ivAvatar.kf.setImage(with: url, placeholder: nil, options: nil, completionHandler: nil)
-        }else{
+       }else{
             ivAvatar.image = nil
-        }
+       }
     }
 
 }

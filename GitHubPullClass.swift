@@ -21,7 +21,7 @@ struct PullRequest : Codable {
 
 struct User : Codable {
     
-    var avatar_ur : String
+    var avatar_url : String
     var body: String?
     
     

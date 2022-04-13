@@ -24,10 +24,11 @@ class repositoriesTableViewController: UITableViewController {
     
     func loadPullsApi(){
         
-        GithubAPI.loadPulls(owner: owner.owner.login , repo: owner.name ) { pull in
+        GithubAPI.loadPulls(pullpage: currentPage ,owner: owner.owner.login , repo: owner.name ) { pull in
             if let pull = pull {
-                self.pulls += pull.pullRequest
-                self.totalpulls = pull.pullRequest.count
+                self.pulls += pull
+                self.totalpulls = pull.count
+                print("Total Pullrequest :",self.pulls,"Já Inclusos : ", self.pulls)
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.loadingpulls = false
@@ -54,10 +55,19 @@ class repositoriesTableViewController: UITableViewController {
         
         let cellPull = pulls[indexPath.row]
         cell.prepareCellPull(with: cellPull)
-       
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == pulls.count - 10 && !loadingpulls && pulls.count != totalpulls{
+        currentPage += 1
+       loadPullsApi()
+           
+            
+       }
+    }
+    
+
 
     /*
     // Override to support conditional editing of the table view.

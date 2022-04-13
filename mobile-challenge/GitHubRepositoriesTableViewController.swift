@@ -18,10 +18,17 @@ class GitHubRepositoriesTableViewController: UITableViewController {
     var totalrepositorires = 0
     var loadingrepositories = false
     
+    var label : UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .blue
+        return label
+    }()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    label.text = "Carregando Repositórios.Aguarde..."
     loadRepositoriesApi()
  
     }
@@ -30,6 +37,7 @@ class GitHubRepositoriesTableViewController: UITableViewController {
         repositories = []
         loadRepositoriesApi()
         tableView.reloadData()
+        currentPage = 1
         
         
     }
@@ -59,7 +67,7 @@ class GitHubRepositoriesTableViewController: UITableViewController {
     
     
     func loadRepositoriesApi(){
-  
+        loadingrepositories = true
         GithubAPI.loadRepositories(page: currentPage , language: selectLanguage()) { info in
             if let info = info {
                 self.repositories += info.items
@@ -68,8 +76,9 @@ class GitHubRepositoriesTableViewController: UITableViewController {
                 print(self.selectLanguage())
                 
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
                     self.loadingrepositories = false
+                    self.tableView.reloadData()
+                    
                 }
                 
             }
@@ -85,7 +94,7 @@ class GitHubRepositoriesTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+        tableView.backgroundView = repositories.count == 0 ? label : nil
         return repositories.count
     }
 

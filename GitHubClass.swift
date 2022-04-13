@@ -18,7 +18,7 @@ struct GitHubInfo : Codable{
     let full_name: String
     let stargazers_count : Int
     let forks: Int
-    let description: String
+    let description: String?
     let owner : Owner
 
 }
