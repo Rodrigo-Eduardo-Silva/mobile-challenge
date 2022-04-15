@@ -25,11 +25,14 @@ class GithubAPI {
         ]
         print(url)
         AF.request(url,headers: headers).responseDecodable(of: GitHead.self) { response in
+            
                guard let data = response.data,
                   let githubinfo = try? JSONDecoder().decode(GitHead.self, from: data)else{
                   onComplete(nil)
                       print("deu ruim")
+                    
                       print(response.error as Any)
+                      
                 return
             }
             onComplete(githubinfo)

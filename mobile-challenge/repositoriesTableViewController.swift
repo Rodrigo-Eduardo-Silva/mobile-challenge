@@ -14,22 +14,29 @@ class repositoriesTableViewController: UITableViewController {
     var totalpulls = 0
     var loadingpulls = false
     var owner : GitHubInfo!
+    var label : UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .blue
+        return label
+    }()
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        label.text = "Carregando Pulls Request"
       loadPullsApi()
     }
     
     func loadPullsApi(){
-        
+        loadingpulls = true
         GithubAPI.loadPulls(pullpage: currentPage ,owner: owner.owner.login , repo: owner.name ) { pull in
             if let pull = pull {
                 self.pulls += pull
                 self.totalpulls = pull.count
                 print("Total Pullrequest :",self.pulls,"Já Inclusos : ", self.pulls)
                 DispatchQueue.main.async {
+                    self.label.text = " Não Existem Pull Request para esse repositório"
                     self.tableView.reloadData()
                     self.loadingpulls = false
                 }
@@ -45,7 +52,8 @@ class repositoriesTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        tableView.backgroundView = pulls.count == 0 ? label : nil
+       
         return pulls.count
     }
 
